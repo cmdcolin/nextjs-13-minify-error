@@ -1,8 +1,35 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import { useEffect } from "react";
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+import { RemoteFile } from "generic-filehandle";
+import { IndexedCramFile, CraiIndex } from "@gmod/cram";
 
 export default function Home() {
+  useEffect(() => {
+    (async () => {
+      try {
+        const indexedFile = new IndexedCramFile({
+          cramFilehandle: new RemoteFile(
+            "https://jbrowse.org/code/jb2/main/test_data/volvox/volvox-sorted.cram"
+          ),
+          index: new CraiIndex({
+            filehandle: new RemoteFile(
+              "https://jbrowse.org/code/jb2/main/test_data/volvox/volvox-sorted.cram"
+            ),
+          }),
+          seqFetch: async () => "",
+          checkSequenceMD5: false,
+        });
+
+        console.log("starting");
+        const samHeader = await indexedFile.cram.getSamHeader();
+        console.log({ samHeader });
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, []);
   return (
     <div className={styles.container}>
       <Head>
@@ -17,7 +44,7 @@ export default function Home() {
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
+          Get started by editing{" "}
           <code className={styles.code}>pages/index.tsx</code>
         </p>
 
@@ -60,12 +87,12 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
+  );
 }
