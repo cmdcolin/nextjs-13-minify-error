@@ -28,6 +28,8 @@ comes from a chunk being eval'd
 
 This is not a super-stripped down reproducible use case, but comes from our modules @gmod/cram https://github.com/GMOD/cram-js/ specifically this file https://github.com/GMOD/cram-js/blob/master/src/cramFile/file.ts
 
+the chunk that fails to eval is below here, specifically "formatter(e){let t"
+
 ```
 (function(buffer, constructorFn, Long) { if (!Buffer.isBuffer(buffer)) {
 throw new Error("argument buffer is not a Buffer object");
